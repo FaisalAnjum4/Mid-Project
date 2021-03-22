@@ -1,0 +1,3 @@
+{"name":"Faisal","gender":"male","DOB":"2021-02-15","Fathername":"Hanif","Mothername":"Firoza","PresentAdd":"Tangail","PermanentAdd":"Rajshahi","Phone":"01312176077","Email":"mr.anjumfaisal@gmail.com","username":"a","password":"As123456"}
+ {"name":"Faisal","gender":"male","DOB":"2021-02-15","Fathername":"Hanif","Mothername":"Firoza","PresentAdd":"Tangail","PermanentAdd":"Rajshahi","Phone":"01312176077","Email":"mr.anjumfaisal@gmail.com","username":"a","password":"Asd123456"}
+ 
