@@ -1,0 +1,2 @@
+{"UserName":"s","FacilityType":"Gym"}
+ 

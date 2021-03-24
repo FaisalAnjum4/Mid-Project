@@ -1,0 +1,5 @@
+{"PaymentType":"bKash","UserName":"sn.saima","PhoneNo":"0123","PinNo":"102"}
+{"PaymentType":"Cash","UserName":"sn.asha","PhoneNo":"012"}
+{"PaymentType":"Cash","UserName":"sn.asha","PhoneNo":"0123"}
+ {"PaymentType":"Cash","UserName":"s","PhoneNo":"01312176077"}
+ 

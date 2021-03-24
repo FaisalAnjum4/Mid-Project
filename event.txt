@@ -1,0 +1,4 @@
+{"UserName":"sn.asha","EventType":"Wedding Planning"}
+ {"UserName":"s","EventType":"Birthday Planning"}
+ {"UserName":"s","EventType":"Birthday Planning"}
+ 

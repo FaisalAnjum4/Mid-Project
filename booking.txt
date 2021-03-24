@@ -1,0 +1,2 @@
+{"Username":"s","BookingDate":"2021-01-01","CheckOutDate":"2021-01-01","RoomType":"Two Bed"}
+ 
