@@ -1,0 +1,2 @@
+{"Name:":"t","Gender:":"male","Date of Birth:":"2021-02-15","Father Name:":"t","Mother Name:":"t","Present Address:":"t","Permanent Address:":"t","Phone Number:":"t","Email_Address":"t@gmail.com","User Id:":"talha","Password":"t"}
+{"Name:":"t","Gender:":"male","Date of Birth:":"2021-02-15","Father Name:":"t","Mother Name:":"t","Present Address:":"t","Permanent Address:":"t","Phone Number:":"t","Email_Address":"ar@gmail.com","User Id:":"ta","Password":"12345"}
