@@ -1,0 +1,2 @@
+{"Name":"f","Gender":"male","Date of Birth":"2021-02-15","Father Name":"f","Mother Name":"f","Present Address":"f","Permanent Address":"f","Phone Number":"f","Email_Address":"faisalanjumfar12@gmail.com","UserName":"f","Password":"f"}
+{"Name":"f","Gender":"male","Date of Birth":"2021-02-15","Father Name":"f","Mother Name":"f","Present Address":"f","Permanent Address":"f","Phone Number":"01312176077","Email_Address":"faisalanjumfar12@gmail.com","UserName":"f","Password":"12345"}
