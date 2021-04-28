@@ -1,49 +1,65 @@
-<?php
-
- session_start();
-?>
-<!DOCTYPE html>
 <html>
 <head>
-<title>User Information </title>
+	<title>
+		
+	</title>
 </head>
-<body background= "fhotel.jpg">
-<center>
-<h1 style="text-align:centre; font-size : 70px;">User Details</h1>
-</center>
-<h1 style=" color: black; text-align:center; ;font-size : 25px;;">
+<body>
+	<table border="2">
+		<tr>
+			<th>id</th>
+			<th> FirstName</th>
+			<th> LastName</th>
+			<th> BirthDate</th>
+			<th> Gender</th>
+			<th> Address</th>
+			<th> Phone</th>
+			<th>Email</th>
+			<th>UserName</th>
+		</tr>
+
 <?php
-echo "<b> Welcome " . $_SESSION['user']."</b>";
-?>
-</h1>
-<h1 style=" color: white; text-align:right ;font-size : 13px;">
-<?php
-  include "DateTime.php" ?>
-  </h1>
-</h1>
-<h1 style=" color: blue; text-align:center; ;font-size : 20px;">
-<?php
-$log_file2 = fopen("user_info.txt", "r");
-$data = fread($log_file2, filesize("user_info.txt"));
-fclose($log_file2);
-$data_filter = explode("\n", $data);
-for($i = 0; $i< count($data_filter)-1; $i++) {
-$json_decode = json_decode($data_filter[$i], true);
-echo "First Name: ". $json_decode['First Name'];
+$conn= mysqli_connect("localhost","farhan34","farhan34","user");
+
+
+
+if($_SERVER["REQUEST_METHOD"] == "GET") {
+
+$searchKey = $_GET['searchKey'];
+$sql = "SELECT * FROM user1 WHERE id = " . $searchKey;
+
+ if(empty($searchKey)) {
+$sql = "SELECT * FROM user1 ";
+}
+$conn = mysqli_connect("localhost","farhan34","farhan34","user");
+
+if($conn -> connect_error) {
+echo "Failed to connect database!";
+}
+else {
+$result = $conn -> query($sql);
+
+ if($result -> num_rows > 0) {
+while ($row = $result-> fetch_assoc()) {
+echo"<tr><td>"  . $row["id"] . "</td><td>". $row["FirstName"] . "</td><td>". $row["LastName"] . "</td><td>". $row["BirthDate"] . "</td><td>". $row["Gender"] . "</td><td>". $row["Address"] . "</td><td>". $row["Phone"] . "</td><td>". $row["Email"] . "</td><td>". $row["UserName"] . "</td> </tr>";
+}
 echo "<br>";
-echo "Phone: " .$json_decode['Phone'];
-echo "<br>";
-echo "Email: ". $json_decode['Email'];
-echo "<br>";
-echo "Address: ". $json_decode['Address'];
-echo "<br>";
-echo "Username: ". $json_decode['username'];
-echo "<br>";
-echo "<br>";
+
+ }
+else {
+echo "NO RECORD FOUND" ;
+}
+}
+$conn -> close();
 }
 
-
 ?>
-</h1>
+</table>
+
 </body>
+</head>
 </html>
+
+
+
+

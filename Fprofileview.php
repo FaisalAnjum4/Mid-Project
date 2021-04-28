@@ -1,44 +1,52 @@
-<?php
-
- session_start();
-?>
-<!DOCTYPE html>
 <html>
 <head>
-<title>Sign in </title>
+	<title>
+		
+	</title>
 </head>
-<body background= "signup.jpg">
-<center>
-<h1 style="text-align:centre; font-size : 70px;">My Profile</h1>
-</center>
-<h1 style=" color: black; text-align:center; ;font-size : 25px;;">
-<?php
-echo "<b> Welcome " . $_SESSION['user']."</b>";
-?>
-</h1>
+<body>
+	<table border="2">
+		<tr>
+			<th> User</th>
+			<th> Name</th>
+			<th> Gender</th>
+			<th> Address</th>
+			<th> Mobile</th>
+			<th> Email</th>
+			<th>Password</th>
+			<th>Operation</th>
+		</tr>
 
-</h1>
-<h1 style=" color: black; text-align:center; ;font-size : 20px;">
 <?php
-$log_file2 = fopen("UserInfo.txt", "r");
-$data = fread($log_file2, filesize("UserInfo.txt"));
-fclose($log_file2);
-$data_filter = explode("\n", $data);
-for($i = 0; $i< count($data_filter)-1; $i++) {
-$json_decode = json_decode($data_filter[$i], true);
-echo "UserID: ". $json_decode['User Id:'];
-echo "<br>";
-echo "Phone: " .$json_decode['Phone Number:'];
-echo "<br>";
-echo "Email: ". $json_decode['Email_Address'];
-echo "<br>";
-echo "Name: ". $json_decode['Name:'];
-echo "<br>";
-echo "<br>";
+
+$conn= mysqli_connect("localhost","farhan34","farhan34","check");
+if($conn->connect_error){
+
+	die("Connection failed:". $conn-> connect_error);
 }
 
 
+$sql = "SELECT  User,Name,Gender,Address,Mobile,Email,Password from check1 ";
+$result = $conn-> query($sql);
+
+if($result-> num_rows > 0){
+
+	while ($row = $result-> fetch_assoc()){
+		echo"<tr><td>". $row["User"] . "</td><td>". $row["Name"] . "</td><td>". $row["Gender"] . "</td><td>". $row["Address"] . "</td><td>". $row["Mobile"] . "</td><td>". $row["Email"] . "</td><td>". $row["Password"] . "</td> <td><a href = 'FRmvr.php?rn=$row[User]'>DELETE</td></tr>";
+
+		
+
+
+	}
+	echo "</table>";
+}
+else{
+	echo "0 result";
+}
+$conn-> close();
+
 ?>
-</h1>
+</table>
 </body>
 </html>
+

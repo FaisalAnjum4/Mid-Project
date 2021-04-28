@@ -7,43 +7,65 @@
 <head>
     <title>Payment</title>
 </head>
-<body background= "black.jpg">
+<body>
     <center>
-    <h1 style=" color: white;text-align:centre; font-size : 70px;">Event</h1>
+    <h1 style=" color: cyan;text-align:centre; font-size : 70px;">Event</h1>
     </center>
- <h1 style=" color: white; text-align:center; ;font-size : 25px;;">
+ <h1 style=" color: cyan; text-align:center; ;font-size : 25px;;">
     <?php
     
  echo "<b>  Welcome " . $_SESSION['user']."</b>";
  ?>
 </h1>
+
+<table border="2">
+    <tr>
+      <th> UserName</th>
+      <th> BookingDate</th>
+      <th> EventType</th>
+     
+    </tr>
+
  <h1 style=" color: white; text-align:right ;font-size : 15px;">
+
+
+
 <?php
-  include "DateTime.php" ?>
-  </h1>
-  <h1 style=" color: white; text-align:center; ;font-size : 20px;">
-  <?php
-     $log_file2 = fopen("event.txt", "r");
-                    
-                    $data = fread($log_file2, filesize("event.txt"));
-                    
-                    fclose($log_file2);
-                    
-                    $data_filter = explode("\n", $data);
-                         
-                    for($i = 0; $i< count($data_filter)-1; $i++) {
-                  
-                        $json_decode = json_decode($data_filter[$i], true);
-                        echo "UserName: ". $json_decode['UserName'];
-                        echo "<br>";
-                        echo "EventType: " .$json_decode['EventType'];
-                          echo "<br>";
-                          echo "<br>";
-                      }
-                      
-                   
+ $conn= mysqli_connect("localhost","farhan34","farhan34","user");
+if($conn->connect_error){
+
+  die("Connection failed:". $conn-> connect_error);
+}
+
+
+$sql = "SELECT UserName,BookingDate,EventType from event ";
+$result = $conn-> query($sql);
+
+if($result-> num_rows > 0){
+
+  while ($row = $result-> fetch_assoc()){
+    echo"<tr><td>". $row["UserName"] . "</td><td>". $row["BookingDate"] . "</td><td>". $row["EventType"]  . "</td> </tr>";
+
+    
+
+
+  }
+  echo "</table>";
+}
+else{
+  echo "0 result";
+}
+$conn-> close();
 
 ?>
+</table>
+</body>
+</html>
+
+                   
+
+
 </h1>
+</table>
 </body>
 </html>

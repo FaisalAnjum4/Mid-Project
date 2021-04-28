@@ -9,8 +9,8 @@
 	
 <?php
 
- $USERID = $NAME = $FATHERNAME =$MOTHERNAME = $PADDRESS = $PERADDRESS = $PHONE=$EMAIL = "";
-$USERIDERR = $NAMEERR = $FATHERNAMEERR =$MOTHERNAMEERR = $PADDRESSERR = $PERADDRESSERR = $PHONEERR=$EMAILERR = "";
+ $USERID = $NAME = $FATHERNAME =$MOTHERNAME = $PADDRESS = $PERADDRESS = $PHONE=  $EMAIL = $PASSWORD = $CONFIRMPASSWORD= "";
+$USERIDERR = $NAMEERR = $FATHERNAMEERR =$MOTHERNAMEERR = $PADDRESSERR = $PERADDRESSERR = $PHONEERR=$EMAILERR =$PASSWORDERR=$CONFIRMPASSWORDERR= "";
 
  if($_SERVER['REQUEST_METHOD'] == "POST") {
 if(empty( $_POST['user'])) {
@@ -66,13 +66,31 @@ $EMAILERR = "Please fill up with your Email";
 else {
 $EMAIL = $_POST['email'];
 }
-if( $USERIDERR=="" && $NAMEERR=="" && $FATHERNAMEERR=="" &&$MOTHERNAMEERR=="" && $PADDRESSERR=="" && $PERADDRESSERR =="" && $PHONEERR=="" && $EMAILERR =="") {
+
+if(empty($_POST['pass'])) {
+$PASSWORDERR = "Please fill up with your PASSWORD";
+}
+else {
+$PASSWORD = $_POST['pass'];
+}
+
+if(empty($_POST['Confirmpass'])) {
+$CONFIRMPASWORDERR = "Please fill up with your confirm PASSWORD";
+}
+else {
+$CONFIRMPASSWORD= $_POST['Confirmpass'];
+}
+
+
+
+
+if( $USERIDERR=="" && $NAMEERR=="" && $FATHERNAMEERR=="" &&$MOTHERNAMEERR=="" && $PADDRESSERR=="" && $PERADDRESSERR =="" && $PHONEERR=="" && $EMAILERR =="" && $PASSWORD=="" && $CONFIRMPASSWORDERR=="") {
 
 $User_Id = $_POST['user'];
 $Name = $_POST['myname'];
 $Gender = $_POST['gender'];
 $Date_of_Birth = $_POST['dateOfBirth'];
-$Religion = $_POST['religion'];
+
 $Father_Name= $_POST['fathername'];
 $Mother_Name= $_POST['mothername'];
 $Present_Address= $_POST['paddress'];
@@ -81,25 +99,73 @@ $Phone_Number= $_POST['phone'];
 $Email_Address= $_POST['email'];
 $Password= $_POST['pass'];
 $Confirm_Password = $_POST['Confirmpass'];
-$Language= $_POST['Language'];
 
 if($Password == $Confirm_Password){
-$details = array('Name' => $Name, 'Gender' => $Gender, 'Date of Birth' => $Date_of_Birth, 'Father Name' => $Father_Name, 'Mother Name' => $Mother_Name,'Present Address' => $Present_Address,'Permanent Address' => $Permanent_Address,'Phone Number' => $Phone_Number,'Email_Address' => $Email_Address,'UserName' => $User_Id, 'Password' => $Password );
-$details_encoded = json_encode($details);
-$filepath = "Information.txt";
-$reg_file = fopen($filepath, "a");
-fwrite($reg_file, $details_encoded . "\n");
-fclose($reg_file);
 
-header("Location: ASuccessful.php ");
-exit();
+      $hostname = "localhost";
+    $username = "farhan34";
+    $password = "farhan34";
+    $dbname = "signup";
+
+    // Mysqli Procedural
+    $conn2 = mysqli_connect($hostname, $username, $password, $dbname);
+
+	if(mysqli_connect_error()) {
+        echo "Database Connection Failed!...";
+        echo "<br>";
+        echo mysqli_connect_error();
+    }
+    else {
+      
+    
+    
+         $stmt2 = mysqli_prepare($conn2, "insert into sign (User,Name,Gender,DOB,Father,Mother,Present,Permanent,Phone,Email,Password) values (?, ?, ?, ?, ?, ?, ?,?,?,?,?)");
+        mysqli_stmt_bind_param($stmt2, "sssssssssss", $usr,$mname, $Gnder , $db , $father ,$mother, $padd ,$pradd, $phn,$eml,$psswrd);
+      $usr = $_POST['user'];
+        $mname = $_POST['myname'];
+       $Gnder = $_POST['gender'];
+       $db = $_POST['dateOfBirth'];
+       $father=$_POST['fathername'];
+       $mother=$_POST['mothername'];
+       $padd=$_POST['paddress'];
+       $pradd=$_POST['permaddress'];
+       $phn = $_POST['phone'];
+       $eml = $_POST['email'];
+       
+       $psswrd = $_POST['pass'];
+        $res = mysqli_stmt_execute($stmt2);
+
+ 
+
+ 
+
+ 
+
+        if($res) {
+            echo " <br> Data Insert Successful!";
+          //  header("Location: CoverPage.html ");
+           // exit();
+        }
+        else {
+            echo "Data Insertion Failed.";
+            echo "<br>";
+            $USERIDERR= "Check The Email and Userid" ;
 }
 
-else {
+
+        }
+     
+
+        //$_SESSION['username'] = $Lastname;
+      }
+    }
+
+             else {
 echo " Incorrect Password ";
 }
+
 }
-}
+
 ?>
 </center>
 </body>
@@ -113,7 +179,7 @@ echo " Incorrect Password ";
 <hr>
 <br>
 <font size="4" color="White">
-<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="POST">
+<form  name ="jsForm"action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" onsubmit="return validate()" method="post"><b>
 <b>
 <center>
 
@@ -129,13 +195,13 @@ echo " Incorrect Password ";
 
 <!-- Radio -->
 <label for="Gender">Gender: </label>
-<input type="radio" name="gender" id="male" value="male" required="required">
+<input type="radio" name="gender" id="male" value="male" checked>
 <label for="male">Male</label>
 
-<input type="radio" name="gender" id="female" value="female" required="required">
+<input type="radio" name="gender" id="female" value="female">
 <label for="female">Female</label>
 
-<input type="radio" name="gender" id="other" value="other" required="required">
+<input type="radio" name="gender" id="other" value="other">
 <label for="other">Other</label>
 <br>
 <br>
@@ -181,17 +247,153 @@ echo " Incorrect Password ";
 <br>
 
 <label for="pass">Password</label>
-<input type="password" id="pass" name="pass">
+<input type="password" id="pass" name="pass"    value="<?php echo $PASSWORD ?>">
+<p><?php echo $PASSWORDERR; ?></p>
+<br>
 <br><br>
 
 <label for="Confirmpass">Confirm Password:</label>
-<input type="password" id="Confirmpass" name="Confirmpass">
+<input type="password" id="Confirmpass" name="Confirmpass"  value="<?php echo $CONFIRMPASSWORD ?>">
+<p><?php echo $CONFIRMPASSWORDERR; ?></p>
 <br>
+<p id = "errorMsg"></p>
 
 </font>
 <input style="color: black; size: 1500px" type="submit" value="Submit">
 <br>
+
 </center>
 </b>
 </form>
-</body></html>
+
+
+
+<script>
+    function validate(){
+        var isValid= false;
+        var user= document.forms["jsForm"]["user"].value;
+
+        var myname= document.forms["jsForm"]["myname"].value;
+             var gender= document.forms["jsForm"]["gender"].value;
+                  var dateOfBirth= document.forms["jsForm"]["dateOfBirth"].value;
+                       var fathername= document.forms["jsForm"]["fathername"].value;
+                            var mothername= document.forms["jsForm"]["mothername"].value;
+                                 var paddress= document.forms["jsForm"]["paddress"].value;
+                                      var permaddress= document.forms["jsForm"]["permaddress"].value;
+                                           var phone= document.forms["jsForm"]["phone"].value;
+                                                var email= document.forms["jsForm"]["email"].value;
+                                                     var pass= document.forms["jsForm"]["pass"].value;
+                                                          var Confirmpass= document.forms["jsForm"]["Confirmpass"].value;
+
+if (user == ""  ){
+document.getElementById('errorMsg').innerHTML ="<b>Please fill up USERNAME Properly </b>";
+
+
+document.getElementById('errorMsg').style.color="red";
+
+}
+
+else if (myname == ""  ){
+document.getElementById('errorMsg').innerHTML ="<b>Please fill up your Name Properly </b>";
+
+
+document.getElementById('errorMsg').style.color="red";
+
+}
+else if (gender== ""  ){
+document.getElementById('errorMsg').innerHTML ="<b>Please fill up your Gender Properly </b>";
+
+
+document.getElementById('errorMsg').style.color="red";
+
+}
+
+else if (dateOfBirth == ""  ){
+document.getElementById('errorMsg').innerHTML ="<b>Please fill up your Birthdate Properly </b>";
+
+
+document.getElementById('errorMsg').style.color="red";
+
+}
+
+else if (fathername == ""  ){
+document.getElementById('errorMsg').innerHTML ="<b>Please fill up your Father Name Properly </b>";
+
+
+document.getElementById('errorMsg').style.color="red";
+
+}
+
+else if (mothername == ""  ){
+document.getElementById('errorMsg').innerHTML ="<b>Please fill up your MOther Name Properly </b>";
+
+
+document.getElementById('errorMsg').style.color="red";
+
+}
+
+else if (paddress== ""  ){
+document.getElementById('errorMsg').innerHTML ="<b>Please fill up your Address Properly </b>";
+
+
+document.getElementById('errorMsg').style.color="red";
+
+}
+
+else if (permaddress == ""  ){
+document.getElementById('errorMsg').innerHTML ="<b>Please fill up your Permanent Properly </b>";
+
+
+document.getElementById('errorMsg').style.color="red";
+
+}
+
+else if (phone == ""  ){
+document.getElementById('errorMsg').innerHTML ="<b>Please fill up your Mobile number Properly </b>";
+
+
+document.getElementById('errorMsg').style.color="red";
+
+}
+
+
+else if (email == ""  ){
+document.getElementById('errorMsg').innerHTML ="<b>Please fill up your Email Properly </b>";
+
+
+document.getElementById('errorMsg').style.color="red";
+
+}
+
+        else if (pass == ""  ){
+document.getElementById('errorMsg').innerHTML ="<b>Please fill up Password Properly </b>";
+
+
+document.getElementById('errorMsg').style.color="red";
+
+}
+
+
+ else if (Confirmpass== ""  ){
+document.getElementById('errorMsg').innerHTML ="<b>Please fill up Confirm Password Properly </b>";
+
+
+document.getElementById('errorMsg').style.color="red";
+
+}
+
+
+else{
+    isValid = true;
+}
+
+        return isValid;
+    }
+
+</script>
+
+
+
+
+</body>
+</html>

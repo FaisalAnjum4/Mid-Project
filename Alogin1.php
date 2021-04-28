@@ -21,7 +21,7 @@
                 }
 
                 else if(empty($_POST['Type'])) {                    
-                    $Typeerr = "Please Fill up the recovery email!";
+                    $Typeerr = "Please Fill up the type!";
                 }
 
                 if($usernameerr ==""&& $passworderr==""&& $Typeerr==""){
@@ -29,107 +29,76 @@
                      $username = $_POST['username'];
                      $password = $_POST['password'];
                      $Type = $_POST['Type'];
-                     setcookie($username,$password,time()+60);
+                     //setcookie($username,$password,time()+60);
 
- if(isset($_COOKIE[$username])){
+ //if(isset($_COOKIE[$username])){
 if($Type=='Admin'){
- $log_file = fopen("APersonal_Data.txt", "r");
-                    
-                    $data = fread($log_file, filesize("APersonal_Data.txt"));
-                    
-                    fclose($log_file);
-                    
-                    $data_filter = explode("\n", $data);
-                         
-                    for($i = 0; $i< count($data_filter); $i++) {
-
-                        $json_decode = json_decode($data_filter[$i], true);
-                        if($json_decode['username'] == $username && $json_decode['password'] == $password) 
-                        {
-
-                    
                             
-                            $_SESSION['user'] = $username;
-                            header("Location: ASuccessful.php ");
-                           exit();
-                                
-                        }   
-                        }                            
                     }
 
                      else if($Type=='Manager'){
- $log_file = fopen("Information.txt", "r");
-                    
-                    $data = fread($log_file, filesize("Information.txt"));
-                    
-                    fclose($log_file);
-                    
-                    $data_filter = explode("\n", $data);
-                         
-                    for($i = 0; $i< count($data_filter); $i++) {
 
-                        $json_decode = json_decode($data_filter[$i], true);
-                        if($json_decode['UserName'] == $username && $json_decode['Password'] == $password) 
-                        {
+
+
+
+$hostname = "localhost";
+    $username = "farhan34";
+    $password = "farhan34";
+    $dbname = "signup";
+
+    // Mysqli Procedural
+    $conn2 = mysqli_connect($hostname, $username, $password, $dbname);
+
+    if($conn2->connect_errno) {
+        echo "Database Connection Failed!...";
+        echo "<br>";
+        echo $conn2->connect_error;
+    }
+    else {
+   
+    
+         $_SESSION['user'] = $_POST['username'];
+         $stmt2 = $conn2->prepare("select id,User,Password from sign where User=? && Password=? ");
+        $stmt2->bind_param("ss", $usr,$pass);
+      $usr = $_POST['username'];
+        $pass = $_POST['password'];
+
+       
+$stmt2->execute();
+        $res =$stmt2->get_result();
+        $check = $res->fetch_assoc();
+
+
+        if($check) {
+            echo " <br> Data Insert Successful!";
+            header("Location: ProfileSave.php ");
+            exit();
+        }
+        else {
+            echo "Login Failed.";
+            echo "<br>";
+            $usernameerr= "Check Userid or password" ;
+}
+
+
+        }
+
+
+
+
                             
-                            $_SESSION['user'] = $username;
-                            header("Location: ProfileSave.php ");
-                           exit();
-                                
-                        }   
-                        }                            
                     } 
 
                     else if($Type=='Receptionist'){
- $log_file = fopen("UserInfo.txt", "r");
-                    
-                    $data = fread($log_file, filesize("UserInfo.txt"));
-                    
-                    fclose($log_file);
-                    
-                    $data_filter = explode("\n", $data);
-                         
-                    for($i = 0; $i< count($data_filter)-1; $i++) {
-
-                        $json_decode = json_decode($data_filter[$i], true);
-                        if($json_decode['User Id:'] == $username && $json_decode['Password'] == $password) 
-                        {
                             
-                            $_SESSION['user'] = $username;
-                            header("Location: Profile.php ");
-                           exit();
-                                
-                        }   
-                        }                            
                     }  
  else if($Type=='User'){
- $log_file = fopen("user_info.txt", "r");
-                    
-                    $data = fread($log_file, filesize("user_info.txt"));
-                    
-                    fclose($log_file);
-                    
-                    $data_filter = explode("\n", $data);
-                         
-                    for($i = 0; $i< count($data_filter); $i++) {
-
-                        $json_decode = json_decode($data_filter[$i], true);
-                        if($json_decode['username'] == $username && $json_decode['password'] == $password) 
-                        {
-                            
-                            $_SESSION['user'] = $username;
-                            header("Location: Button.php ");
-                           exit();
-                                
-                        }   
-                        }                            
-                    }                   
+               
           }
 
                 }
-            }
  
-
+}
                     
 
 ?>
@@ -138,19 +107,19 @@ if($Type=='Admin'){
 <head >
     <title>Sign in </title>
 </head>
-<body background= "signup.jpg">
+<body background= "asa.png">
 
 <center>
-    <h1 style="text-align:centre; font-size : 70px;">Login</h1>
+    <h1 style=" color:#2F4F4F;text-align:centre; font-size : 70px;">Login</h1>
 </center>>
-<form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>"  method="POST"><b>
+<form  name ="jsForm"action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']) ?>" onsubmit="return validate()" method="post"><b>
       
 
       <center>
         
           <font size = 5>
           <label for="username">Enter a username:</label>
-        <input style="color: green; font-size : 10px; width: 90px; height: 20px;" type="text"   name="username" id="username"  placeholder="Enter a UserName" value="<?php echo $username ?>">
+        <input style="color: #800000; font-size : 10px; width: 90px; height: 20px;" type="text"   name="username" id="username"  placeholder="Enter a UserName" value="<?php echo $username ?>">
          <p><?php echo $usernameerr; ?></p>
            <br><br>
 
@@ -184,6 +153,59 @@ if($Type=='Admin'){
 </center>
         
     </form>
+
+
+
+
+
+<p id = "errorMsg"></p>
+<script>
+    function validate(){
+        var isValid= false;
+        var username= document.forms["jsForm"]["username"].value;
+
+        var password= document.forms["jsForm"]["password"].value;
+
+  var Type= document.forms["jsForm"]["Type"].value;
+
+
+if (username == ""  ){
+document.getElementById('errorMsg').innerHTML ="<b>Please fill up USERNAME Properly </b>";
+
+
+document.getElementById('errorMsg').style.color="red";
+
+}
+
+        else if (password == ""  ){
+document.getElementById('errorMsg').innerHTML ="<b>Please fill up Password Properly </b>";
+
+
+document.getElementById('errorMsg').style.color="red";
+
+}
+
+
+ else if (Type == ""  ){
+document.getElementById('errorMsg').innerHTML ="<b>Please fill up Type Properly </b>";
+
+
+document.getElementById('errorMsg').style.color="red";
+
+}
+
+
+else{
+    isValid = true;
+}
+
+        return isValid;
+    }
+
+</script>
+
+
+
 
 </body>
 </html>
